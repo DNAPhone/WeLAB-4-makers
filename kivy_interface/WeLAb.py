@@ -24,6 +24,9 @@ from kivy.app import App
 from kivy.core.image import Image as CoreImage
 from kivy.clock import Clock
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.popup import Popup
+from kivy.properties import StringProperty
 
 
 __author__ = 'DNAPhone S.r.l.'
@@ -55,6 +58,33 @@ PARAM_SHARPNESS_DEFAULT = 0
 
 PHOTO_FOLDER_NAME = "WeLabMicroscope"
 
+
+Builder.load_string('''
+<ConfirmPopup>:
+    cols:1
+    Label:
+        text: root.text
+    GridLayout:
+        cols: 2
+        size_hint_y: None
+        height: '44sp'
+        Button:
+            text: 'Yes'
+            on_release: root.dispatch('on_turn_off_confirm','yes')
+        Button:
+            text: 'No'
+            on_release: root.dispatch('on_turn_off_confirm', 'no')
+''')
+
+class ConfirmPopup(GridLayout):
+    text = StringProperty()
+
+    def __init__(self, **kwargs):
+        self.register_event_type('on_turn_off_confirm')
+        super(ConfirmPopup, self).__init__(**kwargs)
+
+    def on_turn_off_confirm(self, *args):
+        pass
 
 class Micro(FloatLayout):
 
@@ -172,14 +202,29 @@ class Micro(FloatLayout):
         except ValueError:
             print "Cannot connect to the host"
 
-    def turn_off_device(self):
-        try:
-            if self.client_socket is not None:
+    def on_turn_off_confirm(self, instance, answer):
+
+        if answer == 'yes':
+            print "Turning off the device..."
+            try:
                 self.client_socket.sendall('{"attributes":[{"type":"string","name":"command","value":"TURN_OFF"}],"type":"Command"}\n')
                 answer = self.client_socket.recv(BUFFER)
                 self.parse_answer(answer)
-        except ValueError:
-            print "An error occurred while sending the message to the kit"
+            except ValueError:
+                print "An error occurred while sending the message to the kit"
+
+        self.popup.dismiss()
+
+    def turn_off_device(self):
+        if self.client_socket is not None:
+            content = ConfirmPopup(text='Do you really want to turn the device off?')
+            content.bind(on_turn_off_confirm=self.on_turn_off_confirm)
+            self.popup = Popup(title="Turn off",
+                               content=content,
+                               size_hint=(None, None),
+                               size=(480, 400),
+                               auto_dismiss=False)
+            self.popup.open()
 
     def localhost(self):
         label = self.ids["sw1"]
