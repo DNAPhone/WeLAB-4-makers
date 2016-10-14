@@ -213,6 +213,8 @@ class Micro(FloatLayout):
 
             self.client_socket = None
 
+            self.ids[self.microimageoutput].texture = None
+
             self.connecting_popup.dismiss()
 
             popup = Popup(title='Connection failed', content=Label(text='Cannot connect to the We-LAB kit.\nPlease check if the ip address is right.'), size_hint=(None, None), size=(350, 200))
@@ -231,6 +233,9 @@ class Micro(FloatLayout):
                 self.client_socket.sendall('{"attributes":[{"type":"string","name":"command","value":"TURN_OFF"}],"type":"Command"}\n')
                 answer = self.client_socket.recv(BUFFER)
                 self.parse_answer(answer)
+
+                self.ids[self.microimageoutput].texture = None
+
             except ValueError:
                 print "An error occurred while sending the message to the kit"
 
@@ -243,7 +248,7 @@ class Micro(FloatLayout):
             self.popup = Popup(title="Turn off",
                                content=content,
                                size_hint=(None, None),
-                               size=(480, 400),
+                               size=(350, 200),
                                auto_dismiss=False)
             self.popup.open()
 
