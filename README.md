@@ -4,13 +4,13 @@ The software that lets you use your _We-LAB 4 makers_ kit is made of a Kivy GUI,
 
 To set your _We-LAB 4 makers_ kit up, connect your Raspberry Pi to the internet, open the terminal and follow the next steps.
 
-1 . If you have not done it before, expand the file system by running raspi-config command, and reboot.
+1 . If you have not done it before, expand the file system by running _raspi-config_ command, and reboot.
 ```
 pi@raspberrypi ~ $ sudo raspi-config
 pi@raspberrypi ~ $ sudo reboot
 ```
 
-2 . If you have not yet enabled the camera, update the firmware, reboot and enable it by running raspi-config command.
+2 . If you have not enabled the camera yet, update the firmware, reboot and enable it by running _raspi-config_ command.
 ```
 pi@raspberrypi ~ $ sudo rpi-update
 pi@raspberrypi ~ $ sudo reboot
@@ -22,7 +22,7 @@ pi@raspberrypi ~ $ sudo raspi-config
 pi@raspberrypi ~ $ sudo nano /boot/config.txt
 ```
 
-4 . Clone the project folder from GitHub to the home:
+4 . Clone the project folder from GitHub to the home directory (to go to the home, use command ```cd /home/pi```):
 ```
 pi@raspberrypi:~ $ git clone https://github.com/DNAPhone/WeLAB-4-makers.git
 ```
