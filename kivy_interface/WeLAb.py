@@ -219,7 +219,7 @@ class Micro(FloatLayout):
             popup.open()
 
     def connect_to_microscope_led_server(self):
-        self.connecting_popup = Popup(title='Connecting', content=Label(text='Please wait....'), size_hint=(None, None), size=(350, 200))
+        self.connecting_popup = Popup(title='Connecting', content=Label(text='Please wait...'), size_hint=(None, None), size=(350, 200))
         self.connecting_popup.bind(on_open=self.connect_to_server)
         self.connecting_popup.open()
 
