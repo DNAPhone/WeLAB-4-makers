@@ -5,7 +5,7 @@ if [ $(pwd) = "/home/pi/WeLAB-4-makers" ]; then
     sudo apt-get -y install python-dev python-pip
     sudo pip install wiringpi
     git clone https://github.com/silvanmelchior/RPi_Cam_Web_Interface.git
-    sudo mv php/getMediaSaved.php RPi_Cam_Web_Interface
+    sudo mv php/getMediaSaved.php /var/www/html
     sudo mv uconfig /var/www/html
     sudo mv microscope_led_server/ /opt
     sudo mv welab_4_makers /etc/init.d

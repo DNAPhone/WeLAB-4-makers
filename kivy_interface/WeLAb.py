@@ -26,6 +26,7 @@ from kivy.clock import Clock
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.popup import Popup
+from kivy.uix.label import Label
 from kivy.properties import StringProperty
 
 
@@ -76,6 +77,7 @@ Builder.load_string('''
             on_release: root.dispatch('on_turn_off_confirm', 'no')
 ''')
 
+
 class ConfirmPopup(GridLayout):
     text = StringProperty()
 
@@ -85,6 +87,7 @@ class ConfirmPopup(GridLayout):
 
     def on_turn_off_confirm(self, *args):
         pass
+
 
 class Micro(FloatLayout):
 
@@ -194,13 +197,31 @@ class Micro(FloatLayout):
 
         return address
 
-    def connect_to_microscope_led_server(self):
+    def connect_to_server(self, instance):
+
         try:
             socket_address = (self.server_address, _SERVER_PORT)
             self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.client_socket.settimeout(3)
             self.client_socket.connect(socket_address)
-        except ValueError:
-            print "Cannot connect to the host"
+
+            self.connecting_popup.dismiss()
+
+        except (socket.timeout, socket.error) as e:
+
+            print "Connection timeout expired"
+
+            self.client_socket = None
+
+            self.connecting_popup.dismiss()
+
+            popup = Popup(title='Connection failed', content=Label(text='Cannot connect to the We-LAB kit.\nPlease check if the ip address is right.'), size_hint=(None, None), size=(350, 200))
+            popup.open()
+
+    def connect_to_microscope_led_server(self):
+        self.connecting_popup = Popup(title='Connecting', content=Label(text='Please wait....'), size_hint=(None, None), size=(350, 200))
+        self.connecting_popup.bind(on_open=self.connect_to_server)
+        self.connecting_popup.open()
 
     def on_turn_off_confirm(self, instance, answer):
 
@@ -299,6 +320,9 @@ class Micro(FloatLayout):
 
         date_tag = time.strftime("%Y%m%d-%H%M%S")
         urllib.urlretrieve("http://"+self.get_current_address()+"/media/im_welab.jpg", (os.getcwd()+'/'+selected_folder+'/'+picture_name_prefix+'_'+date_tag+'.jpg'))
+
+        popup = Popup(title='Image saved', content=Label(text='The image has been saved.'), size_hint=(None, None), size=(350, 200))
+        popup.open()
 
     @staticmethod
     def default_values():
