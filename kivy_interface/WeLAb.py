@@ -139,6 +139,7 @@ class Micro(FloatLayout):
 
                                         if statusCode['code'] == '200':
                                             self.client_socket = None
+                                            self.ids[self.microimageoutput].texture = None
                                             print 'Connection closed'
 
                                 else:
@@ -233,8 +234,6 @@ class Micro(FloatLayout):
                 self.client_socket.sendall('{"attributes":[{"type":"string","name":"command","value":"TURN_OFF"}],"type":"Command"}\n')
                 answer = self.client_socket.recv(BUFFER)
                 self.parse_answer(answer)
-
-                self.ids[self.microimageoutput].texture = None
 
             except ValueError:
                 print "An error occurred while sending the message to the kit"
