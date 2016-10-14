@@ -1,6 +1,6 @@
 
 
-# uncomment the following two lines for fullscreen view
+# Uncomment the following two lines for fullscreen view
 # from kivy.config import Config
 # Config.set('graphics', 'fullscreen', 'auto')
 
@@ -163,8 +163,6 @@ class Micro(FloatLayout):
     def set_ip(self):
         label = self.ids["ip_configuration"].text
 
-        print label
-
         self.set_server_address(label)
 
         self.connect_to_microscope_led_server()
@@ -229,7 +227,7 @@ class Micro(FloatLayout):
     def on_turn_off_confirm(self, instance, answer):
 
         if answer == 'yes':
-            print "Turning off the device..."
+            print "Turning the device off"
             try:
                 self.client_socket.sendall('{"attributes":[{"type":"string","name":"command","value":"TURN_OFF"}],"type":"Command"}\n')
                 answer = self.client_socket.recv(BUFFER)
@@ -315,15 +313,13 @@ class Micro(FloatLayout):
         time.sleep(1)
         im_name = urllib2.urlopen("http://" + self.get_current_address() + "/getMediaSaved.php?action=getImages").read().replace('"', '').split('|')[0]
 
-        print im_name
-
         if not os.path.exists(selected_folder):
             os.makedirs(selected_folder)
         else:
             pass
 
         date_tag = time.strftime("%Y%m%d-%H%M%S")
-        urllib.urlretrieve("http://"+self.get_current_address()+"/media/im_welab.jpg", (os.getcwd()+'/'+selected_folder+'/'+picture_name_prefix+'_'+date_tag+'.jpg'))
+        urllib.urlretrieve("http://" + self.get_current_address() + "/media/" + im_name, (os.getcwd()+'/' + selected_folder + '/' + picture_name_prefix + '_' + date_tag + '.jpg'))
 
         popup = Popup(title='Image saved', content=Label(text='The image has been saved.'), size_hint=(None, None), size=(350, 200))
         popup.open()
@@ -364,7 +360,7 @@ class Micro(FloatLayout):
         try:
             stream = urllib2.urlopen(self.stream_url, timeout=3)
         except:
-            print "Bad stream you gonna see a lot of errors :D"
+            print "Bad stream"
 
         bytes = ''
 
@@ -395,7 +391,6 @@ class Micro(FloatLayout):
 
             except:
                 sleep_time = 1
-                print "Streaming error waiting %d seconds before retrying" % sleep_time
                 time.sleep(sleep_time)
 
     def update_image(self, *args):
