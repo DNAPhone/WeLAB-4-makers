@@ -64,7 +64,7 @@ pi@raspberrypi ~ $ git clone https://github.com/silvanmelchior/RPi_Cam_Web_Inter
 
 6b.5 . Copy our php file that allows image management to RPi_Cam_Web_Interface folder
 ```
-pi@raspberrypi ~ $ sudo mv php/getMediaSaved.php RPi_Cam_Web_Interface
+pi@raspberrypi ~ $ sudo mv php/getMediaSaved.php /var/www/html
 ```
 
 6b.6 . Set the server that receives led management commands
