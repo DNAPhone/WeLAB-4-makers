@@ -104,6 +104,8 @@ pi@raspberrypi:kivy_interface ~ $ sudo kivy WeLAb.py
 
 Retrieve the ip address of your Raspberry Pi using ifconfig command, and write it to the GUI's settings (3rd tab).
 
+When you take pictures of the microscope view, the Raspberry stores the original ones in /var/www/html/media. You may want to periodically check for the space they are taking and remove the ones you do not need to backup. On your computer, such images are stored in the folder specified by the GUI's settings.
+
 
 # Kivy
 
