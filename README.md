@@ -164,7 +164,10 @@ Finally, in order to make the mouse visible edit the Kivy configuration file
 ```
 sudo nano ~/.kivy/config.ini  
 ```
-adding the following line at the bottom of the file, in the [modules] section
+adding the following line at the bottom of the file, in the [modules] section:
+```
+touchring = show_cursor=true
+```
 
 Alternatively, you can try _kivy pie_, a compact and lightweight Raspbian-based distribution that comes with Kivy installed and ready to run (http://kivypie.mitako.eu).
 
