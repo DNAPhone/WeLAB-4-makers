@@ -10,7 +10,7 @@ pi@raspberrypi ~ $ sudo raspi-config
 pi@raspberrypi ~ $ sudo reboot
 ```
 
-2 . If you have not enabled the camera yet, update the firmware, reboot and enable it by running _raspi-config_ command.
+2 . Update the firmware, reboot and enable the camera by running _raspi-config_ command and choosing the _Enable Camera_ option. Also, choose _Advanced Options_ then _Memory Split_ and insert _256_ to increase the amount of memory available to the GPU.
 ```
 pi@raspberrypi ~ $ sudo rpi-update
 pi@raspberrypi ~ $ sudo reboot
@@ -109,7 +109,7 @@ When you take pictures of the microscope view, the Raspberry stores the original
 
 # Kivy
 
-Why Kivy? Because it is a powerful, nice, open-source and cross-platform framework for the development of applications.
+Why Kivy? Because it is a powerful, open-source and cross-platform framework for the development of applications.
 
 You can adapt and run the same code on all supported platforms.
 
@@ -123,7 +123,7 @@ In case of troubles running our interface directly on the Raspberry Pi, please f
 
 - Recent Kivy versions require Cython version 0.23 or newer. Jessie is currently provided with version 0.21, so be aware that you may need to update  the package. 
 
-Please check for the current Cython version:
+Please check the current Cython version:
 ```
 dpkg -s cython
 ```
@@ -137,11 +137,9 @@ sudo pip install -I Cython==0.23
 We installed all required dependencies as suggested on the Kivy website:
 ```
 sudo apt-get update 
-sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \    
-pkg-config libgl1-mesa-dev libgles2-mesa-dev \    
-python-setuptools libgstreamer1.0-dev git-core \    
-gstreamer1.0-plugins-{bad,base,good,ugly} \    
-gstreamer1.0-{omx,alsa} python-dev cython
+sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
+pkg-config libgl1-mesa-dev libgles2-mesa-dev python-setuptools libgstreamer1.0-dev \
+git-core gstreamer1.0-plugins-{bad,base,good,ugly} gstreamer1.0-{omx,alsa} python-dev
 ```
 
 Then we built Kivy:
@@ -169,15 +167,26 @@ adding the following line at the bottom of the file, in the [modules] section:
 touchring = show_cursor=true
 ```
 
+To run the GUI, go to _kivy\_interface_ folder and run it as follows:
+```
+cd /home/pi/WeLAB-4-makers/kivy_interface
+python WeLAb.py
+```
+
 Alternatively, you can try _kivy pie_, a compact and lightweight Raspbian-based distribution that comes with Kivy installed and ready to run (http://kivypie.mitako.eu).
 
 Please be aware that Kivy under Raspbian should present some problems or limitations. Some interesting discussions are reported here:
--https://www.raspberrypi.org/forums/viewtopic.php?f=32&t=124181
--https://groups.google.com/forum/#!topic/kivy-users/_CKVtjSHC3w
--http://stackoverflow.com/questions/35083935/cant-close-kivy-app-or-avoid-fullscreen
--https://www.raspberrypi.org/forums/viewtopic.php?t=121013
+
+- https://www.raspberrypi.org/forums/viewtopic.php?f=32&t=124181
+
+- https://groups.google.com/forum/#!topic/kivy-users/_CKVtjSHC3w
+
+- http://stackoverflow.com/questions/35083935/cant-close-kivy-app-or-avoid-fullscreen
+
+- https://www.raspberrypi.org/forums/viewtopic.php?t=121013
 
 Relevant issues we have experienced : 
+
 - the GUI only works in fullscreen mode. This is not a _real_ problem, but it should be annoying because we have not (YET!!!) added a gallery section to the GUI...
 
 - there’s the bubbling of  mouse events. In order to overcome possible troubles we suggest to tip the option _hide  the taskbar when not used_ in taskbar raspbian settings.
