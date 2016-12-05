@@ -17,9 +17,14 @@ pi@raspberrypi ~ $ sudo reboot
 pi@raspberrypi ~ $ sudo raspi-config
 ```
 
-3 . To avoid the camera led interfere with the microscope led, disable the former by adding _disable_camera_led=1_ to the _/boot/config.txt_ file
+3 . To avoid the camera led interfere with the microscope led, disable the former by editing _/boot/config.txt_ file
 ```
 pi@raspberrypi ~ $ sudo nano /boot/config.txt
+```
+
+to add the following line at the end
+```
+disable_camera_led=1
 ```
 
 4 . Clone the project folder from GitHub to the home directory (to go to the home, use command ```cd /home/pi```):
@@ -159,11 +164,18 @@ sudo pip install pyglet docutils
 sudo pip install pygments 
 ```
 
-Finally, in order to make the mouse visible edit the Kivy configuration file
+Finally, in order to make the mouse visible you have to edit the Kivy configuration file. Such a file only appears after you have run Kivy at least once. So first run the GUI:
 ```
-sudo nano ~/.kivy/config.ini  
+cd /home/pi/WeLAB-4-makers/kivy_interface
+python WeLAb.py
 ```
-adding the following line at the bottom of the file, in the [modules] section:
+
+Then press the ESC key and edit the configuration file
+```
+sudo nano ~/.kivy/config.ini
+
+```
+by adding the following line at the bottom, in the [modules] section:
 ```
 touchring = show_cursor=true
 ```
