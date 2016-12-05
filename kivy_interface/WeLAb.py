@@ -33,6 +33,7 @@ from kivy.properties import StringProperty
 __author__ = 'DNAPhone S.r.l.'
 
 
+# Default server address and port
 _SERVER_ADDRESS = '192.168.1.2'
 _SERVER_PORT = 1027
 
@@ -56,6 +57,42 @@ PARAM_BRIGHTNESS_DEFAULT = 50
 PARAM_CONTRAST_DEFAULT = 0
 PARAM_SATURATION_DEFAULT = 0
 PARAM_SHARPNESS_DEFAULT = 0
+
+PARAM_PREVIEW_QUALITY = "PREVIEW_QUALITY"  # quality, width, divider
+PARAM_VIDEO_SIZE = "VIDEO_SIZE"  # video width, video height, recording fps, boxing fps, image width, image height
+PARAM_ANNOTATION = "ANNOTATION"  # watermark
+PARAM_ANNOTATION_BACKGROUND = "ANNOTATION_BACKGROUND"  # watermark background
+
+CLIENT_PARAMETERS = {
+    "PREVIEW_QUALITY": 'pv',
+    "VIDEO_SIZE": 'px',
+    "ANNOTATION": 'an',
+    "ANNOTATION_BACKGROUND": 'ab'
+}
+
+# Server setting when the client is local (lower quality for better performance)
+PARAM_PREVIEW_QUALITY_LOCAL_DEFAULT = "10+312+1"
+PARAM_VIDEO_SIZE_LOCAL_DEFAULT = "640+480+25+10+2592+1944"
+PARAM_ANNOTATION_LOCAL_DEFAULT = ""
+PARAM_ANNOTATION_BACKGROUND_LOCAL_DEFAULT = "0"
+
+# Server setting when the client is remote (higher quality)
+PARAM_PREVIEW_QUALITY_REMOTE_DEFAULT = "80+512+1"
+PARAM_VIDEO_SIZE_REMOTE_DEFAULT = "1296+972+25+25+2592+1944"
+PARAM_ANNOTATION_REMOTE_DEFAULT = ""
+PARAM_ANNOTATION_BACKGROUND_REMOTE_DEFAULT = "0"
+
+# Local client settings (reduce image size for better performance)
+ALLOW_STRETCH_LOCAL = False
+KEEP_RATIO_LOCAL = False
+SIZE_HINT_LOCAL = 0.4, 0.4
+POS_HINT_LOCAL = {'x': 0.3, 'y': 0.3}
+
+# Remote client settings (stretch image to fit the window)
+ALLOW_STRETCH_REMOTE = True
+KEEP_RATIO_REMOTE = True
+SIZE_HINT_REMOTE = 1, 1
+POS_HINT_REMOTE = {'x': 0, 'y': 0}
 
 PHOTO_FOLDER_NAME = "WeLabMicroscope"
 
@@ -127,10 +164,7 @@ class Micro(FloatLayout):
 
                                 if 'name' in attributes and 'code' in statusCode and 'reasonPhrase' in statusCode:
 
-                                    if attributes['name'] == 'LOCALHOST_SETTING':
-                                        print 'Received a host parameters setting answer: ' + statusCode['reasonPhrase']
-
-                                    elif attributes['name'] == 'CHANGE_MICROSCOPE_LED_BRIGHTNESS':
+                                    if attributes['name'] == 'CHANGE_MICROSCOPE_LED_BRIGHTNESS':
                                         print 'Received a change led intensity answer: ' + statusCode['reasonPhrase']
 
                                     elif attributes['name'] == 'TURN_OFF':
@@ -167,24 +201,6 @@ class Micro(FloatLayout):
 
         self.connect_to_microscope_led_server()
 
-        if label == "127.0.0.1":
-            try:
-                if self.client_socket is not None:
-                    self.client_socket.sendall('{"attributes":[{"type":"string","name":"command","value":"LOCALHOST_SETTING","set":"%s"}],"type":"Command"}\n' % True)
-                    answer = self.client_socket.recv(BUFFER)
-                    self.parse_answer(answer)
-            except ValueError:
-                print "An error occurred while sending the message to the kit"
-
-        else:
-            try:
-                if self.client_socket is not None:
-                    self.client_socket.sendall('{"attributes":[{"type":"string","name":"command","value":"LOCALHOST_SETTING","set":"%s"}],"type":"Command"}\n' % False)
-                    answer = self.client_socket.recv(BUFFER)
-                    self.parse_answer(answer)
-            except ValueError:
-                print "An error occurred while sending the message to the kit"
-
     def get_current_address(self):
 
         address = self.ids["ip_configuration"].text
@@ -203,6 +219,42 @@ class Micro(FloatLayout):
             self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.client_socket.settimeout(3)
             self.client_socket.connect(socket_address)
+
+            if self.server_address == "127.0.0.1":
+
+                self.ids[self.microimageoutput].allow_stretch = ALLOW_STRETCH_LOCAL
+                self.ids[self.microimageoutput].keep_ratio = KEEP_RATIO_LOCAL
+                self.ids[self.microimageoutput].size_hint = SIZE_HINT_LOCAL
+                self.ids[self.microimageoutput].pos_hint = POS_HINT_LOCAL
+
+                try:
+                    if self.client_socket is not None:
+
+                        self.change_client_param(PARAM_PREVIEW_QUALITY_LOCAL_DEFAULT, PARAM_PREVIEW_QUALITY)
+                        self.change_client_param(PARAM_VIDEO_SIZE_LOCAL_DEFAULT, PARAM_VIDEO_SIZE)
+                        self.change_client_param(PARAM_ANNOTATION_LOCAL_DEFAULT, PARAM_ANNOTATION)
+                        self.change_client_param(PARAM_ANNOTATION_BACKGROUND_LOCAL_DEFAULT, PARAM_ANNOTATION_BACKGROUND)
+
+                except ValueError:
+                    print "An error occurred while sending the message to the kit"
+
+            else:
+
+                self.ids[self.microimageoutput].allow_stretch = ALLOW_STRETCH_REMOTE
+                self.ids[self.microimageoutput].keep_ratio = KEEP_RATIO_REMOTE
+                self.ids[self.microimageoutput].size_hint = SIZE_HINT_REMOTE
+                self.ids[self.microimageoutput].pos_hint = POS_HINT_REMOTE
+
+                try:
+                    if self.client_socket is not None:
+
+                        self.change_client_param(PARAM_PREVIEW_QUALITY_REMOTE_DEFAULT, PARAM_PREVIEW_QUALITY)
+                        self.change_client_param(PARAM_VIDEO_SIZE_REMOTE_DEFAULT, PARAM_VIDEO_SIZE)
+                        self.change_client_param(PARAM_ANNOTATION_REMOTE_DEFAULT, PARAM_ANNOTATION)
+                        self.change_client_param(PARAM_ANNOTATION_BACKGROUND_REMOTE_DEFAULT, PARAM_ANNOTATION_BACKGROUND)
+
+                except ValueError:
+                    print "An error occurred while sending the message to the kit"
 
             self.connecting_popup.dismiss()
 
@@ -268,8 +320,6 @@ class Micro(FloatLayout):
                    self.parse_answer(self.client_socket.recv(BUFFER))
             except ValueError:
                 print "An error occurred while sending the message to the kit"
-
-            print "There is no place like 127.0.0.1 !!\n"
 
         else:
             label2.text = _SERVER_ADDRESS
@@ -372,7 +422,7 @@ class Micro(FloatLayout):
                     with self.stream_changed_lock:
                         self.stream_changed = False
 
-                bytes += stream.read(4096)
+                bytes += stream.read(BUFFER)
                 a = bytes.find('\xff\xd8')
                 b = bytes.find('\xff\xd9')
 
@@ -435,7 +485,6 @@ class Micro(FloatLayout):
         except ValueError:
             print "An error occurred while sending the message to the kit"
 
-
     def change_image_param(self, val, param):
         def call_server():
             try:
@@ -443,9 +492,22 @@ class Micro(FloatLayout):
             except:
                 pass
 
-        command_thread=threading.Thread(target=call_server)
+        command_thread = threading.Thread(target=call_server)
         command_thread.setDaemon(True)
         command_thread.start()
+
+    def change_client_param(self, val, param):
+        def call_server():
+            try:
+                urllib2.urlopen(self.command_url + "cmd=%s\\" % CLIENT_PARAMETERS[param] + val)
+            except:
+                pass
+
+        command_thread = threading.Thread(target=call_server)
+        command_thread.setDaemon(True)
+        command_thread.start()
+
+        command_thread.join()
 
 if __name__ == "__main__":
 

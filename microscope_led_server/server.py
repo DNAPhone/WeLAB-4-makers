@@ -86,21 +86,6 @@ class SocketServer(threading.Thread):
 
                                             subprocess.call(["sudo", "shutdown", "-h", "now"])
 
-                                        elif command_attributes['value'] == 'LOCALHOST_SETTING':
-
-                                            localhost_is_set = command_attributes['set']
-
-                                            uconfig_file = open('/var/www/html/uconfig', 'w')
-
-                                            if localhost_is_set == 'True':
-                                                uconfig_file.write("annotation\nanno_background %s\nvideo_stabilisation %s\ncolour_effect_en %s\nhflip %d\nvflip %d\nraw_layer %s\nwidth %d\nquality %d\nvideo_width %d\nvideo_height %d\nstat_pass %s" % ("off", "off", "disabled", 0, 0, "off", 256, 20, 768, 576, "off"))
-                                                reply = '{"contextResponses": [{"contextElement": {"type": "Answer","isPattern": "false","id": "appCommands","attributes": [{"name": "LOCALHOST_SETTING","type": "string","value": ""}]},"statusCode": {"code": "200","reasonPhrase": "Localhost parameters set"}}]}\n'
-                                                log.debug('Local host streaming parameters set')
-                                            else:
-                                                uconfig_file.write("annotation\nanno_background %s\nvideo_stabilisation %s\ncolour_effect_en %s\nhflip %d\nvflip %d\nraw_layer %s\nquality %d\nvideo_width %d\nvideo_height %d\nimage_quality %d\nstat_pass %s" % ("off", "off", "disabled", 0, 0, "off", 82, 1296, 972, 50, "off"))
-                                                reply = '{"contextResponses": [{"contextElement": {"type": "Answer","isPattern": "false","id": "appCommands","attributes": [{"name": "LOCALHOST_SETTING","type": "string","value": ""}]},"statusCode": {"code": "200","reasonPhrase": "Remote host parameters set"}}]}\n'
-                                                log.debug('Remote host streaming parameters set')
-
                                         else:
                                             conn.sendall('{"contextResponses": [{"contextElement": {"type": "Answer","isPattern": "false","id": "appCommands","attributes": [{"name": "JSON_ERROR","type": "string","value": ""}]},"statusCode": {"code": "400","reasonPhrase": "Unknown command"}}]}\n')
                                             log.error("Unknown command")
