@@ -96,7 +96,7 @@ pi@raspberrypi:RPi_Cam_Web_Interface ~ $ sudo reboot
 
 7 . Retrieve the ip address of your Raspberry Pi using _ifconfig_ command. Search the output for the wlan interface and write somewhere the _inet addr_ value (in the following ecample it is 192.168.1.2).
 ```
-pi@raspberrypi:kivy_interface ~ $ sudo kivy WeLAb.py
+pi@raspberrypi:kivy_interface ~ $ ifconfig
 ...
 wlan0 ...
       inet addr:192.168.1.2
