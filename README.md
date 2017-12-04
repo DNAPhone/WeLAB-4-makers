@@ -2,6 +2,8 @@
 
 The software that lets you use your _We-LAB 4 makers_ kit is made of a Kivy GUI, a video streaming library (_RPi-Cam_web-Interface_ - available at https://github.com/silvanmelchior/RPi_Cam_Web_Interface) and a Python server that lets the GUI manage the intensity of the microscope led. In addition, there is a PHP script that enables the GUI to save pictures of the microscope view.
 
+Please note that the code is only working for Raspbian Jessie (you can download it here http://downloads.raspberrypi.org/raspbian/images/raspbian-2016-09-28/). Also, the Kivy interface is written for Python 2.7, and is not optimized for version 3, e.g., the _print_ function calls miss the round brackets. So if you want to use it using v. 3, you have to tweak a little the code.
+
 To set your _We-LAB 4 makers_ kit up, connect your Raspberry Pi to the internet, open the terminal and follow the next steps.
 
 1 . If you have not done it before, expand the file system by running _raspi-config_ command, and reboot.
@@ -96,19 +98,26 @@ pi@raspberrypi:RPi_Cam_Web_Interface ~ $ sudo reboot
 
 7 . Retrieve the ip address of your Raspberry Pi using _ifconfig_ command. Search the output for the wlan interface and write somewhere the _inet addr_ value (in the following ecample it is 192.168.1.2).
 ```
-pi@raspberrypi:kivy_interface ~ $ sudo kivy WeLAb.py
+pi@raspberrypi:kivy_interface ~ $ ifconfig
 ...
 wlan0 ...
       inet addr:192.168.1.2
 ...
 ```
 
-8 . Now copy kivy_interface folder on another computer in the network and run the GUI.
+8 . Now install Kivy on another computer in the network (instructions for your platform available at https://kivy.org/docs/installation/installation.html), copy kivy_interface folder on such a computer and run the GUI.
+
+Mac users can run the following command:
 ```
 pi@raspberrypi:kivy_interface ~ $ sudo kivy WeLAb.py
 ```
 
-Retrieve the ip address of your Raspberry Pi using ifconfig command, and write it to the GUI's settings (3rd tab).
+Windows users instead have to run the following command:
+```
+> python WeLAb.py
+```
+
+Retrieve the ip address of your Raspberry Pi and write it to the GUI's settings (3rd tab).
 
 When you take pictures of the microscope view, the Raspberry stores the original ones in /var/www/html/media. You may want to periodically check for the space they are taking and remove the ones you do not need to backup. On your computer, such images are stored in the folder specified by the GUI's settings.
 
