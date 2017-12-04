@@ -1,0 +1,21 @@
+[INFO              ] Logger: Record log in /Applications/WeLabAPP.app/Contents/Resources/.kivy/logs/kivy_17-01-27_3.txt
+[INFO              ] Kivy: v1.9.1-dev0
+[INFO              ] Python: v2.7.6 (default, Sep  9 2014, 15:04:36) 
+[GCC 4.2.1 Compatible Apple LLVM 6.0 (clang-600.0.39)]
+[INFO              ] Factory: 179 symbols loaded
+[INFO              ] Image: Providers: img_tex, img_imageio, img_dds, img_gif, img_sdl2 (img_pil, img_ffpyplayer ignored)
+[INFO              ] Text: Provider: sdl2
+[INFO              ] OSC: using <multiprocessing> for socket
+[INFO              ] Window: Provider: sdl2
+[INFO              ] GL: OpenGL version <2.1 INTEL-10.6.31>
+[INFO              ] GL: OpenGL vendor <Intel Inc.>
+[INFO              ] GL: OpenGL renderer <Intel Iris OpenGL Engine>
+[INFO              ] GL: OpenGL parsed version: 2, 1
+[INFO              ] GL: Shading version <1.20>
+[INFO              ] GL: Texture max size <16384>
+[INFO              ] GL: Texture max units <16>
+[INFO              ] Window: auto add sdl2 input provider
+[INFO              ] Window: virtual keyboard not allowed, single mode, not docked
+[INFO              ] GL: NPOT texture support is available
+[INFO              ] Base: Start application main loop
+[INFO              ] Base: Leaving application in progress...

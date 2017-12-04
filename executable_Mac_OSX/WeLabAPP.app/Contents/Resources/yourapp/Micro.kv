@@ -1,0 +1,316 @@
+#:import random random.random
+#:import time time
+#:import os os
+
+
+<Micro>:
+    TabbedPanel:
+        height: root.height
+        width: root.width
+        background_color: (.8, .8, .8, 1)
+        tab_width: self.size[0]/3
+        do_default_tab: False
+
+        TabbedPanelItem:
+            id: tab_fl
+            text: 'Info'
+            text_size: self.size
+            color: (1, 1, 1, 1)
+            background_color: (.3, .7, .9, 1)
+
+            FloatLayout:
+                Image:
+                    id:image
+                    source: os.getcwd()+'/Assembling.jpg'
+                    background_color: (1, 1, 1, 1)
+                    size: self.texture_size
+                    size_hint_y: None
+                    size_hint_x: None
+                    allow_stretch: True
+                    keep_ratio: False
+                    pos_hint: {'x': 0, 'y': 0}
+                    size_hint: 1, 1
+
+        TabbedPanelItem:
+            id: tab_fl_micro
+            text: 'Microscope View'
+            text_size: self.size
+            color: (1, 1, 1, 1)
+            background_color: (.3, .7, .9, 1)
+
+            FloatLayout:
+                Image:
+                    id: microimage
+                    background_color: (1, 1, 1, 1)
+                    size: self.texture_size
+                    size_hint_y: None
+                    size_hint_x: None
+                    allow_stretch: True
+                    keep_ratio: False
+                    pos_hint: {'x': 0, 'y': 0}
+                    size_hint: 1, 1
+
+                Button:
+                    text: "Save Pic"
+                    background_color: (1, 0.1, 1, 0.5)
+                    pos_hint: {'x': .02, 'y': .12}
+                    size_hint: .14, .08
+                    on_press:root.take_picture()
+
+                Button:
+                    text: "Turn off"
+                    background_color: (1, 0.1, 1, 0.5)
+                    pos_hint: {'x': .02, 'y': .02}
+                    size_hint: .14, .08
+                    on_press:root.turn_off_device()
+
+                FloatLayout
+                    pos_hint: {'x': .7, 'y': 0.05}
+                    size_hint: .5, .7
+
+                    BoxLayout:
+                        orientation: 'vertical'
+
+                        canvas.before:
+                            Color:
+                                rgba:.8,.8,.8,0.5
+                            Rectangle:
+                                pos:self.pos
+                                size:self.size
+
+                        pos_hint: {'x': 0, 'y': 0}
+                        size_hint: .55, .15
+
+                        Label:
+                            markup:True
+                            text:" [b]Brightness[/b]"
+                            font_size: sp(14)
+                            color:(1,1,1,1)
+
+                        Slider:
+                            id: s2
+                            step: 2
+                            value: root.default_values()['br']
+                            range: (0,100)
+                            pos_hint: {'x': 0, 'y': 0}
+                            size_hint: 1, 1
+                            on_value: root.control_br()
+
+                        Label:
+                            text: str(int(s2.value))
+                            color:(1,1,1,1)
+
+                    BoxLayout:
+                        orientation: 'vertical'
+
+                        canvas.before:
+                            Color:
+                                rgba:.8,.8,.8,0.5
+                            Rectangle:
+                                pos:self.pos
+                                size:self.size
+
+                        pos_hint: {'x': 0, 'y': .16}
+                        size_hint: .55, .15
+
+                        Label:
+                            markup:True
+                            text:" [b]Contrast[/b]"
+                            font_size: sp(14)
+                            color:(1,1,1,1)
+
+                        Slider:
+                            id: s3
+                            step: 2
+                            value: root.default_values()['co']
+                            range: (0,100)
+                            pos_hint: {'x': 0, 'y': 0}
+                            size_hint: 1, 1
+                            on_value: root.control_co()
+
+                        Label:
+                            text: str(int(s3.value))
+                            color:(1,1,1,1)
+
+                    BoxLayout:
+                        orientation: 'vertical'
+
+                        canvas.before:
+                            Color:
+                                rgba:.8,.8,.8,0.5
+                            Rectangle:
+                                pos:self.pos
+                                size:self.size
+
+                        pos_hint: {'x': 0, 'y': .32}
+                        size_hint: .55, .15
+
+                        Label:
+                            markup:True
+                            text:" [b]Saturation[/b]"
+                            font_size: sp(14)
+                            color:(1,1,1,1)
+
+                        Slider:
+                            id: s4
+                            step: 2
+                            value: root.default_values()['sa']
+                            range: (-100,100)
+                            pos_hint: {'x': 0, 'y': 0}
+                            size_hint: 1, 1
+                            on_value: root.control_sa()
+
+                        Label:
+                            text: str(int(s4.value))
+                            color:(1,1,1,1)
+
+                    BoxLayout:
+                        orientation: 'vertical'
+                        canvas.before:
+                            Color:
+                                rgba:.8,.8,.8,0.5
+                            Rectangle:
+                                pos:self.pos
+                                size:self.size
+
+                        pos_hint: {'x': 0, 'y': .48}
+                        size_hint: .55, .15
+
+                        Label:
+                            markup:True
+                            text:" [b]Sharpness[/b]"
+                            font_size: sp(14)
+                            color:(1,1,1,1)
+
+                        Slider:
+                            id: s1
+                            step: 2
+                            value: root.default_values()['sh']
+                            range: (-100,100)
+                            pos_hint: {'x': 0, 'y': 0}
+                            size_hint: 1, 1
+                            on_value: root.control_sh()
+
+                        Label:
+                            text: str(int(s1.value))
+                            color:(1,1,1,1)
+
+                    BoxLayout:
+                        orientation: 'vertical'
+
+                        canvas.before:
+                            Color:
+                                rgba:.8,.8,.8,0.5
+                            Rectangle:
+                                pos:self.pos
+                                size:self.size
+
+                        pos_hint: {'x': 0, 'y': .64}
+                        size_hint: .55, .15
+
+                        Label:
+                            markup:True
+                            text:" [b]LED Control[/b]"
+                            font_size: sp(14)
+                            color:(1,1,1,1)
+
+                        Slider:
+                            id: s5
+                            step: 2
+                            value: 0
+                            range: (0,1024)
+                            pos_hint: {'x': 0, 'y': 0}
+                            size_hint: 1, 1
+                            on_touch_up: root.control_microscope_led()
+
+                        Label:
+                            text: str(int(s5.value))
+                            color:(1,1,1,1)
+
+        TabbedPanelItem:
+            id: Configuration
+            text: 'Configuration'
+            text_size: self.size
+            color: (1, 1, 1, 1)
+            background_color: (.3, .7, .9, 1)
+
+            FloatLayout:
+                Label:
+                    text:"Insert the Microscope IP"
+                    pos_hint: {'x': 0.05, 'y': .8}
+                    size_hint: .3,.1
+                    font_size:sp(20)
+
+                TextInput:
+                    id:ip_configuration
+                    text: root.get_current_address()
+                    multiline: False
+                    padding:[10, 12, 0, 0]
+                    pos_hint: {'x': 0.05, 'y': .7}
+                    size_hint: .3,.1
+                    font_size:sp(20)
+
+                Button:
+                    id: connect
+                    text:"Connect"
+                    pos_hint: {'x': 0.4, 'y': .7}
+                    size_hint: .15,.1
+                    on_release: root.set_ip()
+
+                Label:
+                    text:"Localhost"
+                    pos_hint: {'x': 0.75, 'y': .8}
+                    size_hint: .3,.1
+                    font_size:sp(20)
+
+	            Switch:
+	                id: sw1
+	                state:'normal'
+                    height: '48dp'
+                    pos_hint: {'x': 0.8, 'y': .7}
+                    size_hint: .2,.1
+                    on_active: root.localhost()
+
+                Label:
+                    text:"Image Folder"
+                    pos_hint: {'x': 0.05, 'y': .5}
+                    size_hint: .18,.1
+                    font_size:sp(20)
+
+                TextInput:
+                    id:folder_configuration
+                    text: str(root.set_folder())
+                    multiline: True
+                    padding:[10, 12, 0, 0]
+                    pos_hint: {'x': 0.05, 'y': .4}
+                    size_hint: .7,.1
+                    font_size:sp(20)
+
+                Label:
+                    id: current_folder
+                    pos_hint: {'x': 0.05, 'y': .34}
+                    size_hint: .6,.1
+                    font_size:sp(12)
+
+                Button:
+                    id: change_folder
+                    text:"Change folder"
+                    pos_hint: {'x': 0.8, 'y': .4}
+                    size_hint: .15,.1
+                    on_release: root.set_folder()
+
+                TextInput:
+                    id:picture_prefix
+                    text: "WeLab"
+                    multiline: False
+                    padding:[10, 12, 0, 0]
+                    pos_hint: {'x': 0.05, 'y': .05}
+                    size_hint: .4,.1
+                    font_size:sp(20)
+
+                Label:
+                    id:picture_prefix_text
+                    text: "Pictures name prefix"
+                    pos_hint: {'x': 0.05, 'y': .15}
+                    size_hint: .25,.1
+                    font_size:sp(20)

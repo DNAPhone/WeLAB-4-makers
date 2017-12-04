@@ -1,0 +1,17 @@
+[INFO              ] Logger: Record log in /Applications/Kivy.app/Contents/Resources/.kivy/logs/kivy_16-10-25_0.txt
+[INFO              ] Kivy: v1.9.1-dev0
+[INFO              ] Python: v2.7.6 (default, Sep  9 2014, 15:04:36) 
+[GCC 4.2.1 Compatible Apple LLVM 6.0 (clang-600.0.39)]
+[INFO              ] Factory: 179 symbols loaded
+[INFO              ] Image: Providers: img_tex, img_imageio, img_dds, img_gif, img_sdl2 (img_pil, img_ffpyplayer ignored)
+[INFO              ] Text: Provider: sdl2
+[WARNING           ] stderr: Traceback (most recent call last):
+[WARNING           ] stderr:   File "main.py", line 460, in <module>
+[WARNING           ] stderr:     MicroApp().run()
+[WARNING           ] stderr:   File "/Applications/Kivy.app/Contents/Resources/kivy/kivy/app.py", line 802, in run
+[WARNING           ] stderr:     root = self.build()
+[WARNING           ] stderr:   File "main.py", line 455, in build
+[WARNING           ] stderr:     Builder.load_file('Micro.kv')
+[WARNING           ] stderr:   File "/Applications/Kivy.app/Contents/Resources/kivy/kivy/lang.py", line 1829, in load_file
+[WARNING           ] stderr:     with open(filename, 'r') as fd:
+[WARNING           ] stderr: IOError: [Errno 2] No such file or directory: 'Micro.kv'
