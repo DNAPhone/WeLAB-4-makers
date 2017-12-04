@@ -111,11 +111,14 @@ Mac users can run the following command:
 ```
 pi@raspberrypi:kivy_interface ~ $ sudo kivy WeLAb.py
 ```
+Also, we provide an executable archive in folder executable_Mac_OSX. Just double-click it to start the GUI.
 
 Windows users instead have to run the following command:
 ```
 > python WeLAb.py
 ```
+
+If you have added Python to the PATH system variable you can just double-click WeLab.py file and the GUI should open automatically.
 
 Retrieve the ip address of your Raspberry Pi and write it to the GUI's settings (3rd tab).
 
