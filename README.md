@@ -39,7 +39,7 @@ pi@raspberrypi:~ $ git clone https://github.com/DNAPhone/WeLAB-4-makers.git
 pi@raspberrypi:~ $ cd WeLAB-4-makers
 ```
 
-Now, you can use our setup script as described in step 6a, or follow the instructions at step 6b. However, if you already have RPi_Cam_Web_Interface installed, follow the steps at point 6b, but skips the library installation. Please note that while the RPi-Cam-Web-Interface library gets installed, it will prompt you a couple of times. Just hit ENTER (the first time it will start the installation process, the second will set the path to where images are saved). At the end, reboot the Raspberry Pi.
+Now, you can use our setup script as described in step 6a, or follow the instructions at step 6b. However, if you already have RPi_Cam_Web_Interface installed, follow the steps at point 6b, but skip the library installation. Please note that while the RPi-Cam-Web-Interface library gets installed, it will ask you to confirm a couple of times. Just hit ENTER (the first time it will start the installation process, the second will set the path to where images are saved). At the end, reboot the Raspberry Pi.
 
 6a . (Alternative to step 6b) Change the setup script execution permission and run it. Please note that if you have already  installed _RPi_Cam_Web_Interface_, you have to remove from the setup script the lines that install it: _git clone https://github.com/silvanmelchior/RPi_Cam_Web_Interface.git_, _chmod u+x RPi_Cam_Web_Interface/RPi_Cam_Web_Interface_Installer.sh_, _RPi_Cam_Web_Interface/RPi_Cam_Web_Interface_Installer.sh install_. Also, you have to write the correct _RPi_Cam_Web_Interface_ install dir at line _sudo mv php/getMediaSaved.php RPi_Cam_Web_Interface_.
 During the installation process you will be asked to install RPi Cam Web Interface; just press ENTER. After a few instants, you will be asked to provide the default www-root location; just press ENTER again. Finally, you will be prompted to reboot, so do it.
@@ -48,7 +48,7 @@ pi@raspberrypi:WeLAB-4-makers $ chmod u+x setup.sh
 pi@raspberrypi:WeLAB-4-makers $ sudo ./setup.sh
 ```
 
-6b . Steps alternative to step 6b
+6b . Steps alternative to step 6a
 
 6b.1 . Update everything
 ```
